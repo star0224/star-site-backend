@@ -15,28 +15,25 @@ public class ArticleService {
     @Autowired
     private ArticleRepository articleRepository;
 
-    public String articleAdd(Article article) {
+    public Article articleAdd(Article article) {
         Article save = articleRepository.save(article);
-        return save != null ? "success" : "failed" ;
+        return save;
     }
 
     public List<Article> articleList() {
-        return convert(articleRepository.findAll());
+        return articleRepository.findAll();
+    }
+
+    public List<Article> articleList(String isPublic) {
+        return articleRepository.findArticlesByIsPublic(isPublic);
+    }
+
+    public List<Article> articleList(Integer categoryId) {
+        return articleRepository.findArticlesByCategoryId(categoryId);
     }
 
     public Article getArticle(Long id) {
         return articleRepository.findById(id).get();
     }
 
-    public List<Article> articleList(Integer categoryId) {
-        return convert(articleRepository.findArticlesByCategoryId(categoryId));
-    }
-
-    private List<Article> convert(List<Article> articles) {
-        articles.stream().map(article -> {
-            article.getCategory().setArticleList(null);
-            return article;
-        }).collect(Collectors.toList());
-        return articles;
-    }
 }

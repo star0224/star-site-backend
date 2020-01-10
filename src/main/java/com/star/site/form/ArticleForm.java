@@ -7,10 +7,20 @@ public class ArticleForm {
     private String title;
     private String date;
     private String content;
-    private Integer likes;
+    private Integer comments;
     private Integer views;
     private String isTop;
+    private String isPublic;
     private ArticleCategory articleCategory;
+
+
+    public String getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(String isPublic) {
+        this.isPublic = isPublic;
+    }
 
     public Long getId() {
         return id;
@@ -52,12 +62,12 @@ public class ArticleForm {
         this.articleCategory = articleCategory;
     }
 
-    public Integer getLikes() {
-        return likes;
+    public Integer getComments() {
+        return comments;
     }
 
-    public void setLikes(Integer likes) {
-        this.likes = likes;
+    public void setComments(Integer comments) {
+        this.comments = comments;
     }
 
     public Integer getViews() {

@@ -1,7 +1,6 @@
 package com.star.site.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "article")
@@ -21,17 +20,18 @@ public class Article {
     @Column(columnDefinition = "Text", nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private Integer likes;
+    private Integer comments = 0;
 
-    @Column(nullable = false)
-    private Integer views;
+    private Integer views = 0;
+
+    @Column(length = 1)
+    private String isTop = "0";
 
     @Column(nullable = false, length = 1)
-    private String isTop;
+    private String isPublic;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
-    @JoinColumn(name = "categoryId", nullable = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private ArticleCategory category;
 
     public Long getId() {
@@ -66,12 +66,12 @@ public class Article {
         this.content = content;
     }
 
-    public Integer getLikes() {
-        return likes;
+    public Integer getComments() {
+        return comments;
     }
 
-    public void setLikes(Integer likes) {
-        this.likes = likes;
+    public void setComments(Integer comments) {
+        this.comments = comments;
     }
 
     public Integer getViews() {
@@ -96,5 +96,13 @@ public class Article {
 
     public void setCategory(ArticleCategory category) {
         this.category = category;
+    }
+
+    public String getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(String isPublic) {
+        this.isPublic = isPublic;
     }
 }

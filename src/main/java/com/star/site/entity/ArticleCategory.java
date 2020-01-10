@@ -1,8 +1,8 @@
 package com.star.site.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +17,7 @@ public class ArticleCategory {
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JSONField(serialize=false) // 不参与序列化
     private List<Article> articleList = new ArrayList<>();
 
     public Integer getId() {

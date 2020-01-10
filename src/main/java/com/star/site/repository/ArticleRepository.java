@@ -9,5 +9,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     List<Article> findArticlesByCategoryId(Integer categoryId);
 
-
+    List<Article> findArticlesByIsPublic(String isPublic);
 }
