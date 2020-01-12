@@ -5,16 +5,18 @@ import com.star.site.repository.ArticleCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ArticleCategoryService {
-    @Autowired
+    @Resource
     private ArticleCategoryRepository articleCategoryRepository;
+    @Resource
+    private ArticleService articleService;
 
     public List<ArticleCategory> categoryList() {
-        return convert(articleCategoryRepository.findAll());
+        return articleCategoryRepository.findAll();
     }
 
 
@@ -23,11 +25,7 @@ public class ArticleCategoryService {
         return save;
     }
 
-    private List<ArticleCategory> convert(List<ArticleCategory> categories) {
-        categories.stream().map(category -> {
-            category.setArticleList(null);
-            return category;
-        }).collect(Collectors.toList());
-        return categories;
+    public void deleteCategory(Integer id) {
+        articleCategoryRepository.deleteById(id);
     }
 }

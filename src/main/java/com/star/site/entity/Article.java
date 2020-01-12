@@ -30,7 +30,7 @@ public class Article {
     @Column(nullable = false, length = 1)
     private String isPublic;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private ArticleCategory category;
 

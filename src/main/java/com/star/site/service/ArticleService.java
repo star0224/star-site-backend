@@ -1,18 +1,19 @@
 package com.star.site.service;
 
 import com.star.site.entity.Article;
-import com.star.site.entity.ArticleCategory;
 import com.star.site.repository.ArticleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class ArticleService {
 
-    @Autowired
+    @Resource
     private ArticleRepository articleRepository;
 
     public Article articleAdd(Article article) {
@@ -36,4 +37,14 @@ public class ArticleService {
         return articleRepository.findById(id).get();
     }
 
+    public void deleteArticle(Long id) {
+        articleRepository.deleteById(id);
+    }
+
+    public Article updateById(Long id, String isPublic) {
+        Article article = articleRepository.findById(id).get();
+        article.setIsPublic(isPublic);
+        Article save = articleRepository.save(article);
+        return save;
+    }
 }

@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
 public class ArticleCategoryController {
-    @Autowired
+    @Resource
     private ArticleCategoryService articleCategoryService;
 
     @GetMapping("/article/category/list")
@@ -30,7 +31,17 @@ public class ArticleCategoryController {
     public String addCategory(@RequestBody ArticleCategory category) {
         ArticleCategory articleCategory = articleCategoryService.addCategory(category);
         return articleCategory != null ?
-                JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "获取文章分类成功", articleCategory))
-                : JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "获取文章分类失败"));
+                JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "增加文章分类成功", articleCategory))
+                : JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "增加文章分类失败"));
     }
-}
+
+    @GetMapping("/article/category/delete")
+    public String deleteCategory(Integer id) {
+        try {
+            articleCategoryService.deleteCategory(id);
+            return JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "删除文章分类及其文章成功"));
+        } catch (Exception e) {
+            return JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "删除文章分类及其文章失败"));
+        }
+    }
+ }

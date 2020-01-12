@@ -8,15 +8,18 @@ import com.star.site.entity.Article;
 import com.star.site.form.ArticleForm;
 import com.star.site.service.ArticleService;
 import com.star.site.utils.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
 public class ArticleController {
 
-    @Autowired
+    @Resource
     private ArticleService articleService;
 
     // 新增/更新文章
@@ -33,6 +36,7 @@ public class ArticleController {
         String goal = "保存";
         if (articleForm.getId() != null) {
             article.setId(articleForm.getId());
+            article.setViews(articleForm.getViews());
             goal = "更新";
         }
         Article save = articleService.articleAdd(article);
@@ -77,7 +81,23 @@ public class ArticleController {
         return save != null ?
                 JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "获取文章成功", save)) :
                 JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "获取文章失败"));
-
     }
 
+    @GetMapping("/article/delete")
+    public String deleteArticleById(Long id) {
+        try {
+            articleService.deleteArticle(id);
+            return JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "删除文章成功"));
+        } catch (Exception e) {
+            return JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "删除文章失败，请重试"));
+        }
+    }
+
+    @GetMapping("/article/update/public")
+    public String updateById(Long id, String isPublic) {
+        Article save = articleService.updateById(id, isPublic);
+        return save != null ?
+                JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "更新文章成功", save)) :
+                JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "更新文章失败"));
+    }
 }
