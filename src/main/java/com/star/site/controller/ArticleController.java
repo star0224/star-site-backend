@@ -72,6 +72,16 @@ public class ArticleController {
                 JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "获取文章失败"));
     }
 
+    // 根据类别、是否公开查找文章
+    @GetMapping("/article/category/public")
+    public String articleList(Integer categoryId, String isPublic) {
+        List<Article> articles = articleService.articleList(categoryId, isPublic);
+        return articles != null ?
+                JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "获取文章成功", articles), SerializerFeature.DisableCircularReferenceDetect) :
+                JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "获取文章失败"));
+    }
+
+
     // 根据id查找文章，查找后访问量自增
     @GetMapping("/article")
     public String getArticleById(Long id) {
@@ -100,4 +110,5 @@ public class ArticleController {
                 JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "更新文章成功", save)) :
                 JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "更新文章失败"));
     }
+
 }

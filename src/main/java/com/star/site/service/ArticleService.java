@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -17,8 +16,7 @@ public class ArticleService {
     private ArticleRepository articleRepository;
 
     public Article articleAdd(Article article) {
-        Article save = articleRepository.save(article);
-        return save;
+        return articleRepository.save(article);
     }
 
     public List<Article> articleList() {
@@ -31,6 +29,10 @@ public class ArticleService {
 
     public List<Article> articleList(Integer categoryId) {
         return articleRepository.findArticlesByCategoryId(categoryId);
+    }
+
+    public List<Article> articleList(Integer categoryId, String isPublic) {
+        return articleRepository.findArticlesByCategoryIdAndIsPublic(categoryId, isPublic);
     }
 
     public Article getArticle(Long id) {
