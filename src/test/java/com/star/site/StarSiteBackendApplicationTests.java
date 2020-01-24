@@ -1,16 +1,15 @@
 package com.star.site;
 
+import com.star.site.utils.StarDateUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Date;
 
 @SpringBootTest
 class StarSiteBackendApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println(new Date());
+        System.out.println(StarDateUtils.getWeekStart());
     }
 
 }

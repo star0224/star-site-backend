@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.star.site.common.StarResponse;
 import com.star.site.common.StarResponseCode;
+import com.star.site.dto.ArticleStatisticDTO;
 import com.star.site.entity.Article;
 import com.star.site.form.ArticleForm;
 import com.star.site.service.ArticleService;
-import com.star.site.utils.DateUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ArticleController {
@@ -27,11 +28,11 @@ public class ArticleController {
     public String articleAdd(@RequestBody ArticleForm articleForm) {
         Article article = new Article();
         // 默认当天日期，保存yyyy-MM-dd格式
-        article.setDate(DateUtils.getDate());
         article.setContent(articleForm.getContent());
         article.setTitle(articleForm.getTitle());
         article.setIsPublic(articleForm.getIsPublic());
         article.setCategory(articleForm.getArticleCategory());
+        article.setDate(articleForm.getDate());
         // 如果有id则更新
         String goal = "保存";
         if (articleForm.getId() != null) {
@@ -111,4 +112,19 @@ public class ArticleController {
                 JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "更新文章失败"));
     }
 
+    @GetMapping("/article/statistic")
+    public String articleStatistic() {
+        ArticleStatisticDTO articleStatisticDTO = articleService.articleStatistic();
+        return articleStatisticDTO != null ?
+                JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "获取统计信息成功", articleStatisticDTO)) :
+                JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "获取统计信息失败"));
+    }
+
+    @GetMapping("/article/num")
+    public String articleNum() {
+        List<Map<String, String>> articleNumDTOS = articleService.getArticleNumGroupByCategory();
+        return articleNumDTOS != null ?
+                JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "获取数量成功", articleNumDTOS)) :
+                JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "获取数量失败"));
+    }
 }

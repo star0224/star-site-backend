@@ -18,4 +18,7 @@ public class VersionInfo {
 
     @Column(nullable = false, length = 20)
     private String version;
+
+    @Column(nullable = false, length = 20)
+    private String date;
 }
