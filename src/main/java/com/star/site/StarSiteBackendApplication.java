@@ -8,7 +8,6 @@ public class StarSiteBackendApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(StarSiteBackendApplication.class, args);
-
     }
 
 }

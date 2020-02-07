@@ -20,6 +20,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Modifying
     void deleteById(Long id);
 
-    @Query(value = "select count(article.id) as articleNum, category.name as categoryName from article, article_category category where article.category_id = category.id group by article.category_id", nativeQuery = true)
+    @Query(value = "select count(article.id) as articleNum, category.name as categoryName from article, article_category category where article.category_id = category.id and is_public = '1' group by article.category_id", nativeQuery = true)
     List<Map<String, String>> findArticlesNumGroupByCategory();
 }

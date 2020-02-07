@@ -9,7 +9,6 @@ class StarSiteBackendApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println(StarDateUtils.getWeekStart());
+        System.out.println(StarDateUtils.getTime());
     }
-
 }

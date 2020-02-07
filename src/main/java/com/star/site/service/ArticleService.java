@@ -6,14 +6,12 @@ import com.star.site.entity.Article;
 import com.star.site.repository.ArticleRepository;
 import com.star.site.utils.StarDateUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 @Service
-@Transactional
 public class ArticleService {
 
     @Resource
@@ -24,19 +22,19 @@ public class ArticleService {
     }
 
     public List<Article> articleList() {
-        return articleRepository.findAll();
+        return removeArticlesContent(articleRepository.findAll());
     }
 
     public List<Article> articleList(String isPublic) {
-        return articleRepository.findArticlesByIsPublic(isPublic);
+        return cutArticlesContent(articleRepository.findArticlesByIsPublic(isPublic));
     }
 
     public List<Article> articleList(Integer categoryId) {
-        return articleRepository.findArticlesByCategoryId(categoryId);
+        return removeArticlesContent(articleRepository.findArticlesByCategoryId(categoryId));
     }
 
     public List<Article> articleList(Integer categoryId, String isPublic) {
-        return articleRepository.findArticlesByCategoryIdAndIsPublic(categoryId, isPublic);
+        return removeArticlesContent(articleRepository.findArticlesByCategoryIdAndIsPublic(categoryId, isPublic));
     }
 
     public Article getArticle(Long id) {
@@ -82,5 +80,23 @@ public class ArticleService {
 
     public List<Map<String, String>> getArticleNumGroupByCategory() {
         return articleRepository.findArticlesNumGroupByCategory();
+    }
+
+    // 对内容进行删减，获取列表时只需展示部分内容
+    public List<Article> cutArticlesContent(List<Article> articles) {
+        articles.forEach(article -> {
+            if (article.getContent().length() >= 50) {
+                article.setContent(article.getContent().substring(0, 50));
+            }
+        });
+        return articles;
+    }
+
+    // 对内容进行移除，获取部分列表时不需展示内容
+    public List<Article> removeArticlesContent(List<Article> articles) {
+        articles.forEach(article -> {
+            article.setContent("");
+        });
+        return articles;
     }
 }
