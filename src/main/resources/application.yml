@@ -12,5 +12,6 @@ spring:
   devtools:
     restart:
       enabled: true
-
+  redis:
+    host: 116.62.123.56
 

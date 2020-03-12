@@ -4,6 +4,7 @@ import com.star.site.dto.VersionInfoDTO;
 import com.star.site.entity.VersionInfo;
 import com.star.site.repository.VersionInfoRepository;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,7 +23,10 @@ public class VersionInfoService {
     }
 
     public List<VersionInfoDTO> versionInfoList() {
-        List<VersionInfo> all = versionInfoRepository.findAll(Sort.by(Sort.Direction.DESC, "version"));
+        List<Order> sorts = new ArrayList<>();
+        sorts.add(new Order(Sort.Direction.DESC, "version"));
+        sorts.add(new Order(Sort.Direction.ASC, "id"));
+        List<VersionInfo> all = versionInfoRepository.findAll(Sort.by(sorts));
         List<String> versions = new ArrayList<>();
         List<VersionInfoDTO> versionInfoDTOS = new ArrayList<>();
         all.forEach(item -> {

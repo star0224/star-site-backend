@@ -1,5 +1,6 @@
 package com.star.site.entity;
 
+import com.star.site.constants.StarConstants;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -20,18 +21,23 @@ public class Article {
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(columnDefinition = "Text", nullable = false)
+    @Column(columnDefinition = "MEDIUMTEXT", nullable = false)
     private String content;
 
     private Integer comments = 0;
 
     private Integer views = 0;
 
+    private Integer wordCount = 0;
+
     @Column(length = 1)
-    private String isTop = "0";
+    private String isTop = StarConstants.ARTICLE_NOT_TOP;
 
     @Column(nullable = false, length = 1)
     private String isPublic;
+
+    @Column(length = 1024)
+    private String description;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id", nullable = false)

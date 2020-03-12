@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
-public class VocabularyContoller {
+public class VocabularyController {
     @Resource
     private VocabularyService vocabularyService;
 
@@ -32,9 +31,27 @@ public class VocabularyContoller {
                 JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "保存失败"));
     }
 
+    @GetMapping("/vocabulary/delete")
+    public String deleteVocabulariesByDate(String date) {
+        try {
+            vocabularyService.deleteVocabulariesByDate(date);
+            return JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "删除成功"));
+        } catch (Exception e) {
+            return JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "删除失败"));
+        }
+    }
+
     @GetMapping("/vocabulary/all")
-    public String findAll() {
+    public String findVocabularyNumGroupByDate() {
         List<Map<String, Object>> all = vocabularyService.findVocabularyNumGroupByDate();
+        return all != null ?
+                JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "获取成功", all)) :
+                JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "获取失败"));
+    }
+
+    @GetMapping("/vocabulary/all/info")
+    public String findAll() {
+        List<Vocabulary> all = vocabularyService.findAll();
         return all != null ?
                 JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "获取成功", all)) :
                 JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "获取失败"));
@@ -63,4 +80,5 @@ public class VocabularyContoller {
                 JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "获取成功", vocabularies)) :
                 JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "获取失败"));
     }
+
 }

@@ -3,6 +3,7 @@ package com.star.site.service;
 import com.star.site.entity.Vocabulary;
 import com.star.site.repository.VocabularyRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,7 +21,7 @@ public class VocabularyService {
     }
 
     public List<Vocabulary> findAll() {
-        return vocabularyRepository.findAll();
+        return vocabularyRepository.findAll(Sort.by("english"));
     }
 
     public List<Map<String, Object>> findVocabularyNumGroupByDate() {

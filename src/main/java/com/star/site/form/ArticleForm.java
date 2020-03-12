@@ -1,5 +1,6 @@
 package com.star.site.form;
 
+import com.star.site.constants.StarConstants;
 import com.star.site.entity.ArticleCategory;
 import lombok.Data;
 
@@ -9,9 +10,10 @@ public class ArticleForm {
     private String title;
     private String date;
     private String content;
-    private Integer comments;
-    private Integer views;
-    private String isTop;
+    private Integer views = 0;
+    private Integer wordCount;
+    private String isTop = StarConstants.ARTICLE_NOT_TOP;
     private String isPublic;
-    private ArticleCategory articleCategory;
+    private String description;
+    private ArticleCategory category;
 }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ViewsService {
@@ -14,13 +16,20 @@ public class ViewsService {
     private ViewsRepository viewsRepository;
 
     public Long count() {
-        return viewsRepository.count();
+        return viewsRepository.countTotal();
     }
 
     public Views save(Views views) {
         return viewsRepository.save(views);
     }
 
+    public List<Map<String, Object>> countCity(String province) {
+        return viewsRepository.countCity(province);
+    }
+
+    public List<Map<String, Object>> countProvince() {
+        return viewsRepository.countProvince();
+    }
 
     public boolean validate(String ip) {
         Views lastView = viewsRepository.findFirstByIpOrderByIdDesc(ip);
@@ -32,4 +41,5 @@ public class ViewsService {
         long now = Long.parseLong(StarDateUtils.getTime().replaceAll("[-: ]", ""));
         return standard > now;
     }
+
 }

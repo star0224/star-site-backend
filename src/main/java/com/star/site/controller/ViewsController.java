@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ViewsController {
@@ -47,4 +49,21 @@ public class ViewsController {
                 JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "保存成功", save)) :
                 JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "保存失败"));
     }
+
+    @GetMapping("/views/province")
+    public String countProvince() {
+        List<Map<String, Object>> provinces = viewsService.countProvince();
+        return provinces != null ?
+                JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "查找成功", provinces)) :
+                JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "查找失败"));
+    }
+
+    @GetMapping("/views/city")
+    public String countCity(String province) {
+        List<Map<String, Object>> cities = viewsService.countCity(province);
+        return cities != null ?
+                JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "查找成功", cities)) :
+                JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "查找失败"));
+    }
+
 }

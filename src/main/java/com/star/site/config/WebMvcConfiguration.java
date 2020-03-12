@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import java.util.List;
 
 @Configuration
-public class WebMvcConfig extends WebMvcConfigurationSupport {
+public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     // 允许CORS
     @Override
@@ -28,8 +28,8 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         super.configureMessageConverters(converters);
         // 使用FastJson作为默认的MessageConverter，将接受参数(JSON类型)转为对象
-        FastJsonHttpMessageConverter fastConverter=new FastJsonHttpMessageConverter();
-        FastJsonConfig fastJsonConfig=new FastJsonConfig();
+        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
+        FastJsonConfig fastJsonConfig = new FastJsonConfig();
         fastJsonConfig.setSerializerFeatures(
                 SerializerFeature.PrettyFormat
         );

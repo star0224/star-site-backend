@@ -5,7 +5,6 @@ import com.star.site.common.StarResponse;
 import com.star.site.common.StarResponseCode;
 import com.star.site.entity.ArticleCategory;
 import com.star.site.service.ArticleCategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ArticleCategoryController {
@@ -21,7 +21,7 @@ public class ArticleCategoryController {
 
     @GetMapping("/article/category/list")
     public String categoryList() {
-        List<ArticleCategory> articleCategories = articleCategoryService.categoryList();
+        List<Map<String, Object>> articleCategories = articleCategoryService.categoryList();
         return articleCategories != null ?
                 JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "获取所有分类成功", articleCategories))
                 : JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "获取所有分类失败"));

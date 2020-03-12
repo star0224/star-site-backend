@@ -14,6 +14,7 @@ public interface VocabularyRepository extends JpaRepository<Vocabulary, Integer>
     @Transactional
     void deleteVocabulariesByDate(String date);
 
-    @Query(value = "select count(id) as vocabularyNum, date from vocabulary group by date", nativeQuery = true)
+    @Query(value = "select count(id) as vocabularyNum, date from vocabulary group by date order by date asc", nativeQuery = true)
     List<Map<String, Object>> findVocabularyNumGroupByDate();
+
 }

@@ -3,11 +3,15 @@ package com.star.site.service;
 import com.star.site.constants.StarConstants;
 import com.star.site.dto.ArticleStatisticDTO;
 import com.star.site.entity.Article;
+import com.star.site.entity.ArticleCategory;
 import com.star.site.repository.ArticleRepository;
 import com.star.site.utils.StarDateUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,24 +25,68 @@ public class ArticleService {
         return articleRepository.save(article);
     }
 
-    public List<Article> articleList() {
-        return removeArticlesContent(articleRepository.findAll());
+    public List<Map<String, Object>> articleList() {
+        return articleRepository.findAllExcludeContent();
     }
 
-    public List<Article> articleList(String isPublic) {
-        return cutArticlesContent(articleRepository.findArticlesByIsPublic(isPublic));
+    public List<Map<String, Object>> articleHome() {
+        return articleRepository.findArticleHome();
     }
 
-    public List<Article> articleList(Integer categoryId) {
-        return removeArticlesContent(articleRepository.findArticlesByCategoryId(categoryId));
+    public List<Map<String, Object>> articleList(String isPublic) {
+        return isPublic != StarConstants.ARTICLE_PUBLIC ?
+                articleRepository.findAllExcludeContent() : articleRepository.findPublicExcludeContent();
     }
 
-    public List<Article> articleList(Integer categoryId, String isPublic) {
-        return removeArticlesContent(articleRepository.findArticlesByCategoryIdAndIsPublic(categoryId, isPublic));
+    public List<Map<String, Object>> articleList(Integer categoryId) {
+        return articleRepository.findAllExcludeContentByCategoryId(categoryId);
     }
 
+    public List<Map<String, Object>> articleList(Integer categoryId, String isPublic) {
+        return isPublic != StarConstants.ARTICLE_PUBLIC ?
+                articleRepository.findAllExcludeContentByCategoryId(categoryId) : articleRepository.findPublicExcludeContentByCategoryId(categoryId);
+    }
+
+    // 根据id查找文章，查找后访问量自增
     public Article getArticle(Long id) {
-        return articleRepository.findById(id).get();
+        Map<String, Object> articleMap = articleRepository.starFindArticleById(id);
+        Article article = new Article();
+        article.setId(((BigInteger) articleMap.get("id")).longValue());
+        article.setDate((String) articleMap.get("date"));
+        article.setDescription((String) articleMap.get("description"));
+        article.setIsPublic((String) articleMap.get("isPublic"));
+        article.setIsTop((String) articleMap.get("isTop"));
+        article.setWordCount((Integer) articleMap.get("wordCount"));
+        article.setViews((Integer) articleMap.get("views") + 1);
+        article.setContent((String) articleMap.get("content"));
+        article.setTitle((String) articleMap.get("title"));
+        article.setComments((Integer) articleMap.get("comments"));
+        ArticleCategory articleCategory = new ArticleCategory();
+        articleCategory.setId((Integer) articleMap.get("categoryId"));
+        articleCategory.setName((String) articleMap.get("categoryName"));
+        article.setCategory(articleCategory);
+        return article;
+    }
+
+    public Article updateArticleViewsById(Long id) {
+        Map<String, Object> articleMap = articleRepository.starFindArticleById(id);
+        Article article = new Article();
+        article.setId(((BigInteger) articleMap.get("id")).longValue());
+        article.setDate((String) articleMap.get("date"));
+        article.setDescription((String) articleMap.get("description"));
+        article.setIsPublic((String) articleMap.get("isPublic"));
+        article.setIsTop((String) articleMap.get("isTop"));
+        article.setWordCount((Integer) articleMap.get("wordCount"));
+        article.setViews((Integer) articleMap.get("views") + 1);
+        article.setContent((String) articleMap.get("content"));
+        article.setTitle((String) articleMap.get("title"));
+        article.setComments((Integer) articleMap.get("comments"));
+        ArticleCategory articleCategory = new ArticleCategory();
+        articleCategory.setId((Integer) articleMap.get("categoryId"));
+        articleCategory.setName((String) articleMap.get("categoryName"));
+        article.setCategory(articleCategory);
+        articleAdd(article);
+        return article;
     }
 
     public void deleteArticle(Long id) {
@@ -50,6 +98,10 @@ public class ArticleService {
         article.setIsPublic(isPublic);
         Article save = articleRepository.save(article);
         return save;
+    }
+
+    public Long articleNum() {
+        return articleRepository.countNum();
     }
 
     public ArticleStatisticDTO articleStatistic() {
@@ -78,25 +130,8 @@ public class ArticleService {
         return articleStatisticDTO;
     }
 
-    public List<Map<String, String>> getArticleNumGroupByCategory() {
+    public List<Map<String, Object>> getArticleNumGroupByCategory() {
         return articleRepository.findArticlesNumGroupByCategory();
     }
 
-    // 对内容进行删减，获取列表时只需展示部分内容
-    public List<Article> cutArticlesContent(List<Article> articles) {
-        articles.forEach(article -> {
-            if (article.getContent().length() >= 50) {
-                article.setContent(article.getContent().substring(0, 50));
-            }
-        });
-        return articles;
-    }
-
-    // 对内容进行移除，获取部分列表时不需展示内容
-    public List<Article> removeArticlesContent(List<Article> articles) {
-        articles.forEach(article -> {
-            article.setContent("");
-        });
-        return articles;
-    }
 }
