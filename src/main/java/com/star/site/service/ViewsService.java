@@ -31,6 +31,10 @@ public class ViewsService {
         return viewsRepository.countProvince();
     }
 
+    public List<Map<String, Object>> countLast7DaysViews() {
+        return viewsRepository.countLast7DaysViews();
+    }
+
     public boolean validate(String ip) {
         Views lastView = viewsRepository.findFirstByIpOrderByIdDesc(ip);
         if (lastView == null) {

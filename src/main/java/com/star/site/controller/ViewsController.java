@@ -66,4 +66,11 @@ public class ViewsController {
                 JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "查找失败"));
     }
 
+    @GetMapping("/views/last7Days/num")
+    public String countLast7DaysViews() {
+        List<Map<String, Object>> views = viewsService.countLast7DaysViews();
+        return views != null ?
+                JSON.toJSONString(new StarResponse(StarResponseCode.SUCCESS.getCode(), "查找成功", views)) :
+                JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "查找失败"));
+    }
 }

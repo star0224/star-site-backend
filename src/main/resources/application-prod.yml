@@ -1,10 +1,12 @@
 spring:
-  profiles:
-    active: prod
   datasource:
     url: jdbc:mysql://116.62.123.56:3306/star_blog
     username: root
     password: '0224'
+#    primary:
+#      url: jdbc:mysql://116.62.123.56:3306/star_blog&user=root&password=0224
+#    backup:
+#      url: jdbc:mysql://rm-bp1v19620520reqv5jo.mysql.rds.aliyuncs.com:3306/star_blog&user=star&password=Gx990224
   jpa:
     show-sql: true
     hibernate:
@@ -14,6 +16,3 @@ spring:
   devtools:
     restart:
       enabled: true
-  redis:
-    host: r-bp1fa2bf30ba0534pd.redis.rds.aliyuncs.com
-    password: Gx990224

@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://rm-bp1v19620520reqv5jo.mysql.rds.aliyuncs.com:3306/star_blog
+    username: star
+    password: 'Gx990224'
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    open-in-view: true
+  devtools:
+    restart:
+      enabled: true
+
+
