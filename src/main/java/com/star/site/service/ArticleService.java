@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,21 +87,6 @@ public class ArticleService {
         return article;
     }
 
-    public void deleteArticle(Long id) {
-        articleRepository.deleteById(id);
-    }
-
-    public Article updateById(Long id, String isPublic) {
-        Article article = articleRepository.findById(id).get();
-        article.setIsPublic(isPublic);
-        Article save = articleRepository.save(article);
-        return save;
-    }
-
-    public Long articleNum() {
-        return articleRepository.countNum();
-    }
-
     public ArticleStatisticDTO articleStatistic() {
         ArticleStatisticDTO articleStatisticDTO = new ArticleStatisticDTO();
         List<Article> articles = articleRepository.findArticlesByIsPublic(StarConstants.ARTICLE_PUBLIC);
@@ -130,8 +113,24 @@ public class ArticleService {
         return articleStatisticDTO;
     }
 
+    public void deleteArticle(Long id) {
+        articleRepository.deleteById(id);
+    }
+
+    public Article updateById(Long id, String isPublic) {
+        Article article = articleRepository.findById(id).get();
+        article.setIsPublic(isPublic);
+        Article save = articleRepository.save(article);
+        return save;
+    }
+
+    public Long articleNum() {
+        return articleRepository.countNum();
+    }
+
     public List<Map<String, Object>> getArticleNumGroupByCategory() {
         return articleRepository.findArticlesNumGroupByCategory();
     }
+
 
 }

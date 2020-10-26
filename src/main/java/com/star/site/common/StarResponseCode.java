@@ -3,8 +3,7 @@ package com.star.site.common;
 public enum StarResponseCode {
     SUCCESS(1, "SUCCESS"),
     ERROR(0, "ERROR"),
-    ILLEGAL_PERMISSION(2, "ILLEGAL_PERMISSION")
-    ;
+    ILLEGAL_PERMISSION(2, "ILLEGAL_PERMISSION");
 
     private final int Code;
 

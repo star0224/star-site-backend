@@ -8,7 +8,6 @@ import com.star.site.form.CommentForm;
 import com.star.site.service.CommentService;
 import com.star.site.utils.StarDateUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +32,8 @@ public class CommentController {
 
     @PostMapping("/comment/save")
     public String save(@RequestBody CommentForm commentForm) {
+        // TODO 增加同一IP评论阈值
+
         Comment comment = new Comment();
         BeanUtils.copyProperties(commentForm, comment);
         comment.setTime(StarDateUtils.getTime());
@@ -55,4 +56,10 @@ public class CommentController {
             return JSON.toJSONString(new StarResponse(StarResponseCode.ERROR.getCode(), "删除失败，数据库异常"));
         }
     }
+
+    public String update() {
+        
+        return null;
+    }
+
 }

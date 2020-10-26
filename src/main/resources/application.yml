@@ -15,5 +15,5 @@ spring:
     restart:
       enabled: true
   redis:
-    host: r-bp1fa2bf30ba0534pd.redis.rds.aliyuncs.com
+    host: 116.62.123.56
     password: Gx990224

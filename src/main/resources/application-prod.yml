@@ -16,3 +16,8 @@ spring:
   devtools:
     restart:
       enabled: true
+#server:
+#  ssl:
+#    key-store-password: g2UlH4ih
+#    key-store-type: PKCS12
+#    key-store: classpath:cert/3720955_star0224.com.pfx
